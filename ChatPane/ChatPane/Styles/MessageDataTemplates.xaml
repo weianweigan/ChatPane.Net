@@ -1,0 +1,151 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:chat="clr-namespace:ChatPane">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ChatPane;component/Styles/Converters.xaml" />
+        <ResourceDictionary Source="/ChatPane;component/Styles/Icons.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <DataTemplate x:Key="UserMessage">
+        <Border
+            Name="_chatBorder"
+            Padding="10,0"
+            BorderBrush="#19000000"
+            BorderThickness="0,0,0,2">
+            <Grid Margin="0,5,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="_chatHeader">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="28" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                        Width="28"
+                        Height="28"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Source="{StaticResource UserDrawingImage}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Black"
+                        Text="{Binding}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Top"
+                        Visibility="{Binding ElementName=_chatHeader, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Hyperlink Command="{Binding CopyCommand}">
+                            <TextBlock Text="Copy" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Column="3"
+                        VerticalAlignment="Top"
+                        Visibility="{Binding ElementName=_chatHeader, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Hyperlink Command="{Binding DataContext.RemoveChatDataCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                            <TextBlock Text="Delete" />
+                        </Hyperlink>
+                    </TextBlock>
+                </Grid>
+                <FlowDocumentScrollViewer
+                    Grid.Row="1"
+                    Grid.ColumnSpan="4"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    AutomationProperties.Name="{Binding Content}"
+                    Focusable="True"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsTabStop="True"
+                    VerticalScrollBarVisibility="Disabled">
+                    <FlowDocumentScrollViewer.Document>
+                        <MultiBinding Converter="{StaticResource ChatMarkdownFlowConverter}">
+                            <Binding Path="Content" />
+                            <Binding Path="DataContext" />
+                        </MultiBinding>
+                    </FlowDocumentScrollViewer.Document>
+                </FlowDocumentScrollViewer>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="AIMessage">
+        <Border
+            Name="_chatBorder"
+            Padding="10,0"
+            BorderBrush="#19000000"
+            BorderThickness="0,0,0,2">
+            <Grid Margin="0,5,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="_chatHeader">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="28" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                        Width="28"
+                        Height="28"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Source="{StaticResource AIChatGPTDrawingImage}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Black"
+                        Text="{Binding}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Top"
+                        Visibility="{Binding ElementName=_chatHeader, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Hyperlink Command="{Binding CopyCommand}">
+                            <TextBlock Text="Copy" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Column="3"
+                        VerticalAlignment="Top"
+                        Visibility="{Binding ElementName=_chatHeader, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Hyperlink Command="{Binding DataContext.RemoveChatDataCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                            <TextBlock Text="Delete" />
+                        </Hyperlink>
+                    </TextBlock>
+                </Grid>
+                <FlowDocumentScrollViewer
+                    Grid.Row="1"
+                    Grid.ColumnSpan="4"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    AutomationProperties.Name="{Binding Content}"
+                    Focusable="True"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsTabStop="True"
+                    VerticalScrollBarVisibility="Disabled">
+                    <FlowDocumentScrollViewer.Document>
+                        <MultiBinding Converter="{StaticResource ChatMarkdownFlowConverter}">
+                            <Binding Path="Content" />
+                            <Binding Path="DataContext" />
+                        </MultiBinding>
+                    </FlowDocumentScrollViewer.Document>
+                </FlowDocumentScrollViewer>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <chat:MessageDataTemplateSelector
+        x:Key="MessageDataTemplateSelector"
+        chat:AIMessageDataTemplate="{StaticResource AIMessage}"
+        chat:UserMessageDataTemplate="{StaticResource UserMessage}" />
+</ResourceDictionary>

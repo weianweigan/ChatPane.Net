@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="ForgroundTextColor">Black</Color>
+    <Color x:Key="BackgroundColor">#F7F7F7</Color>
+
+    <SolidColorBrush x:Key="Background" Color="{DynamicResource BackgroundColor}" />
+    <SolidColorBrush x:Key="ForgroundTextBrush" Color="{DynamicResource ForgroundTextColor}" />
+</ResourceDictionary>
